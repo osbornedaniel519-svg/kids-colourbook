@@ -137,8 +137,9 @@ def front_cover():
                           (1640, 1900, 30, PASTELS[1])]:
         flower_fill(draw, x, y, r, 6, col)
     unicorn_color(draw, 850, 1520, 1.55)
-    text_with_outline(draw, (850, 210), "UNICORN", TITLE_FONT, (140, 60, 150), "white", 14, anchor="mm")
-    text_with_outline(draw, (850, 345), "COLORING BOOK", SUB_FONT, INK, "white", 10, anchor="mm")
+    text_with_outline(draw, (850, 150), "UNICORN", TITLE_FONT, (140, 60, 150), "white", 14, anchor="mm")
+    text_with_outline(draw, (850, 305), "PARTY", TITLE_FONT, (140, 60, 150), "white", 14, anchor="mm")
+    text_with_outline(draw, (850, 420), "A Coloring Book", SUB_FONT, INK, "white", 10, anchor="mm")
     badge_c = (1470, 940)
     draw.ellipse([badge_c[0] - 130, badge_c[1] - 130, badge_c[0] + 130, badge_c[1] + 130],
                  fill=(255, 235, 140), outline=INK, width=6)

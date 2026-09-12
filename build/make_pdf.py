@@ -23,9 +23,9 @@ def build_interior():
     big = ImageFont.truetype(f"{font_dir}/EricaOne-Regular.ttf", 110)
     small = ImageFont.truetype(f"{font_dir}/EricaOne-Regular.ttf", 48)
     tiny = ImageFont.truetype(f"{font_dir}/Outfit-Regular.ttf", 34)
-    d.text((850, 950), "Unicorn", font=big, fill="black", anchor="mm")
-    d.text((850, 1080), "Coloring Book", font=small, fill="black", anchor="mm")
-    d.text((850, 1200), "24 Magical Pages", font=tiny, fill="black", anchor="mm")
+    d.text((850, 900), "Unicorn Party", font=big, fill="black", anchor="mm")
+    d.text((850, 1030), "A Coloring Book", font=small, fill="black", anchor="mm")
+    d.text((850, 1150), "24 Magical Pages", font=tiny, fill="black", anchor="mm")
 
     pages = [title]
     blank = Image.new("RGB", (1700, 2200), "white")
