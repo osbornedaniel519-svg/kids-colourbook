@@ -11,7 +11,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 PAGE_W, PAGE_H = 1700, 2200          # 8.5 x 11 in @ 200dpi
-MARGIN = 80
+MARGIN = 110
 BW = 9   # base stroke width (main outlines)
 TW = 5   # thin stroke width (details)
 
@@ -266,7 +266,7 @@ def ground_line(draw, y, width=TW, fill=BLACK):
 
 
 def page_frame(draw, fill=BLACK):
-    inset = 40
+    inset = MARGIN
     stroke_pts(draw, [(inset, inset), (PAGE_W - inset, inset), (PAGE_W - inset, PAGE_H - inset),
                        (inset, PAGE_H - inset)], 6, closed=True, fill=fill)
     for cx, cy in [(inset, inset), (PAGE_W - inset, inset), (inset, PAGE_H - inset), (PAGE_W - inset, PAGE_H - inset)]:

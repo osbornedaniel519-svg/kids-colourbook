@@ -218,7 +218,7 @@ def p13(draw):
 def p14(draw):
     for i in range(10):
         a = 2 * math.pi * i / 10
-        heart(draw, 850 + 760 * math.cos(a), 1100 + 900 * math.sin(a), 32, TW * 0.7)
+        heart(draw, 850 + 600 * math.cos(a), 1100 + 800 * math.sin(a), 32, TW * 0.7)
     bx, by = 1300, 720
     stroke_pts(draw, [(bx - 65, by), (bx, by - 38), (bx - 65, by - 76)], TW, closed=True)
     stroke_pts(draw, [(bx + 65, by), (bx, by - 38), (bx + 65, by - 76)], TW, closed=True)
@@ -288,7 +288,7 @@ def p20(draw):
 
 def p21(draw):
     ground_line(draw, GROUND_Y)
-    for x, y, c in [(220, 420, 90), (1550, 370, 95), (280, 800, 75), (1500, 800, 85), (1580, 1150, 70)]:
+    for x, y, c in [(240, 420, 90), (1470, 370, 90), (300, 800, 75), (1440, 800, 80), (1490, 1150, 65)]:
         balloon(draw, x, y, c * 0.7, 150, TW)
     y0 = 190
     for x in range(MARGIN + 40, PAGE_W - MARGIN, 90):
