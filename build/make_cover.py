@@ -33,6 +33,18 @@ def leaf_fill(draw, p0, p1, bulge, color, outline=INK, width=5):
     draw.polygon(pts, fill=color, outline=outline, width=width)
 
 
+def stroke_lock(draw, p0, c0, c1, p1, width, color, outline=INK, out_w=7, n=20):
+    pts = bezier4(p0, c0, c1, p1, n)
+    draw.line(pts, fill=outline, width=int(width + out_w), joint="curve")
+    r = (width + out_w) / 2
+    for p in (pts[0], pts[-1]):
+        draw.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=outline)
+    draw.line(pts, fill=color, width=int(width), joint="curve")
+    r2 = width / 2
+    for p in (pts[0], pts[-1]):
+        draw.ellipse([p[0] - r2, p[1] - r2, p[0] + r2, p[1] + r2], fill=color)
+
+
 def flower_fill(draw, cx, cy, r, petals, petal_color, center_color=GOLD):
     for i in range(petals):
         a = 2 * math.pi * i / petals
@@ -76,17 +88,30 @@ def unicorn_color(draw, cx, cy, scale, mirror=1):
                      fill=(90, 70, 60), outline=INK, width=4)
     hx, hy, hr = 190, -220, 150 * scale
     head_c = (cx + mirror * hx * scale, cy + hy * scale)
-    for i, (dx, dy) in enumerate([(-40, -145), (0, -95), (45, -35), (85, 25), (110, 90), (100, 150)]):
-        col = PASTELS[i % len(PASTELS)]
-        pcx, pcy = head_c[0] + mirror * dx * scale, head_c[1] + dy * scale
-        draw.ellipse([pcx - 46 * scale, pcy - 46 * scale, pcx + 46 * scale, pcy + 46 * scale],
-                     fill=col, outline=INK, width=4)
-    for i, (dx, dy) in enumerate([(-260, 120), (-300, 190), (-290, 260)]):
-        col = PASTELS[(i + 2) % len(PASTELS)]
-        pcx, pcy = cx + mirror * dx * scale, cy + dy * scale
-        draw.ellipse([pcx - 38 * scale, pcy - 38 * scale, pcx + 38 * scale, pcy + 38 * scale],
-                     fill=col, outline=INK, width=4)
+
+    def hp(dx, dy):
+        return (head_c[0] + mirror * dx * scale, head_c[1] + dy * scale)
+
     draw.ellipse([head_c[0] - hr, head_c[1] - hr, head_c[0] + hr, head_c[1] + hr], fill=CREAM, outline=INK, width=7)
+    mane_strands = [
+        (hp(-10, -145), hp(-50, -110), hp(-20, -40), hp(-55, 20)),
+        (hp(-30, -135), hp(-75, -90), hp(-35, 0), hp(-80, 60)),
+        (hp(-55, -115), hp(-105, -60), hp(-55, 55), hp(-110, 105)),
+        (hp(-80, -85), hp(-135, -20), hp(-80, 100), hp(-140, 150)),
+        (hp(-100, -50), hp(-155, 20), hp(-100, 140), hp(-160, 190)),
+    ]
+    for i, (p0, c0, c1, p1) in enumerate(mane_strands):
+        stroke_lock(draw, p0, c0, c1, p1, 44 * scale, PASTELS[i % len(PASTELS)])
+    tail_strands = [
+        (cx + mirror * -235 * scale, cy + 115 * scale),
+        (cx + mirror * -220 * scale, cy + 155 * scale),
+        (cx + mirror * -200 * scale, cy + 195 * scale),
+        (cx + mirror * -185 * scale, cy + 235 * scale),
+    ]
+    for i, base in enumerate(tail_strands):
+        tip = (base[0] + mirror * -60 * scale, base[1] + 130 * scale)
+        mid = (base[0] + mirror * -75 * scale, base[1] + 55 * scale)
+        stroke_lock(draw, base, mid, mid, tip, 40 * scale, PASTELS[(i + 2) % len(PASTELS)])
     mx, my = head_c[0] + mirror * hr * 1.0, head_c[1] + hr * 0.3
     draw.ellipse([mx - 54 * scale, my - 38 * scale, mx + 54 * scale, my + 38 * scale], fill=CREAM, outline=INK, width=5)
     draw.ellipse([mx + mirror * 26 * scale - 6 * scale, my - 6 * scale, mx + mirror * 26 * scale + 6 * scale, my + 6 * scale],
@@ -95,10 +120,14 @@ def unicorn_color(draw, cx, cy, scale, mirror=1):
     draw.ellipse([ex - 22 * scale, ey - 22 * scale, ex + 22 * scale, ey + 22 * scale], fill="white", outline=INK, width=5)
     draw.ellipse([ex + mirror * 5 * scale - 12 * scale, ey + 4 * scale - 12 * scale,
                   ex + mirror * 5 * scale + 12 * scale, ey + 4 * scale + 12 * scale], fill=INK)
+    draw.ellipse([ex + mirror * 1 * scale - 4 * scale, ey - 8 * scale - 4 * scale,
+                  ex + mirror * 1 * scale + 4 * scale, ey - 8 * scale + 4 * scale], fill="white")
     for dxx in (-13, 2, 17):
         p0 = (ex + mirror * dxx * scale, ey - 20 * scale)
         p1 = (ex + mirror * dxx * 1.3 * scale, ey - 34 * scale)
         draw.line([p0, p1], fill=INK, width=4)
+    bx_, by_ = ex - mirror * hr * 0.42, ey + hr * 0.28
+    draw.ellipse([bx_ - 22 * scale, by_ - 15 * scale, bx_ + 22 * scale, by_ + 15 * scale], fill=(255, 178, 190))
     ear_a = (head_c[0] - mirror * hr * 0.35, head_c[1] - hr * 0.82)
     leaf_fill(draw, ear_a, (ear_a[0] - mirror * hr * 0.28, ear_a[1] - hr * 0.55), hr * 0.16, CREAM)
     ear_b = (head_c[0] + mirror * hr * 0.18, head_c[1] - hr * 0.92)
